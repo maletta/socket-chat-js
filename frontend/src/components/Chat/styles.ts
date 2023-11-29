@@ -5,8 +5,6 @@ const containerWidth = 500;
 const ChatContainer = styled.div`
   width: ${containerWidth}px;
   height: auto;
-
-  
 `;
 
 const WaveSVG = styled.svg`
@@ -26,8 +24,6 @@ const ChatHeader = styled.div`
   position: relative;
 
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-
-
 `;
 const ChatMessageContainer = styled.div`
   height: 300px;
@@ -42,21 +38,18 @@ const ChatMessageList = styled.div`
   width: 100%;
   height: 100%;
 
-  border-bottom: 1px solid ${({ theme }) => theme.palette.black.dark};;
-
+  border-bottom: 1px solid ${({ theme }) => theme.palette.black.dark};
 `;
 
 const ChatMessageItem = styled.div`
-
   background-image: linear-gradient(to right, #8e2de2, #4a00e0);
-
 `;
 
 const ChatInputContainer = styled.div`
   width: 100%;
   height: 80px;
 
-  background-color: ${({ theme }) => theme.palette.gray.dark};;
+  background-color: ${({ theme }) => theme.palette.gray.dark};
 `;
 
 const ChatInput = styled.div``;
@@ -72,5 +65,5 @@ export default {
   ChatMessageContainer,
   ChatMessageList,
   ChatSendButton,
-  ChatMessageItem
+  ChatMessageItem,
 };

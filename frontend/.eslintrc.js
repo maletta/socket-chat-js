@@ -5,7 +5,7 @@ module.exports = {
     'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
     'plugin:@typescript-eslint/eslint-recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-    "prettier"
+    // "prettier"
   ],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   env: {
