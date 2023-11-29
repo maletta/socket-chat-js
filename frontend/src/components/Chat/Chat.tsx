@@ -1,8 +1,16 @@
 import React from 'react';
 
 import CHS from './styles';
+import { messagesMocks } from 'mocks/chatMessagesMock';
+import { IMessageAuthor } from 'types/messages-types';
+import clsx from 'clsx';
+import { formatDate } from 'utils/date';
 
 const Chat: React.FC = () => {
+  const user: IMessageAuthor = {
+    id: 1,
+    name: 'Agente 1',
+  };
   return (
     <CHS.ChatContainer>
       <CHS.ChatHeader>
@@ -15,7 +23,17 @@ const Chat: React.FC = () => {
         </CHS.WaveSVG>
       </CHS.ChatHeader>
       <CHS.ChatMessageContainer>
-        <CHS.ChatMessageList></CHS.ChatMessageList>
+        <CHS.ChatMessageList>
+          {messagesMocks.map(message => {
+            const messageAuthor = message.author.id === user.id ? 'sender' : 'receiver';
+            return (
+              <CHS.ChatMessageItem key={message.id} className={clsx({ [messageAuthor]: true })}>
+                <p> {message.content}</p>
+                <span>{formatDate(message.timestamp)}</span>
+              </CHS.ChatMessageItem>
+            );
+          })}
+        </CHS.ChatMessageList>
       </CHS.ChatMessageContainer>
       <CHS.ChatInputContainer>
         <CHS.ChatInput />

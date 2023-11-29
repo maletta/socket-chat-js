@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { ThemeProvider as ThemeProviderStyledComponent } from 'styled-components';
+import { ThemeProvider as ThemeProviderStyledComponent } from 'styled-components/macro';
 import { ITheme } from '../../types/theme-types';
 
 type IThemeProps = {
@@ -12,13 +12,13 @@ const ThemeContextProvider = ({ children }: IThemeProps) => {
   const [theme] = useState<ITheme>({
     palette: {
       commom: {
-        black: '#fff',
-        white: '#020202',
+        black: '#020202',
+        white: '#fff',
       },
       primary: {
         main: '#7F5A83',
         dark: '#6F4973',
-        light: '#BF9AC3',// #A188A6 #9DA2AB
+        light: '#BF9AC3', // #A188A6 #9DA2AB
       },
       secondary: {
         main: '#5A7F5C',
@@ -39,14 +39,15 @@ const ThemeContextProvider = ({ children }: IThemeProps) => {
         main: '#ececec',
         dark: '#e1e1e1',
         light: '#f6f6f6',
-      }
+      },
     },
   });
 
-
-  return <ThemeContext.Provider value={theme}>
-    <ThemeProviderStyledComponent theme={theme}>{children}</ThemeProviderStyledComponent>
-  </ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={theme}>
+      <ThemeProviderStyledComponent theme={theme}>{children}</ThemeProviderStyledComponent>
+    </ThemeContext.Provider>
+  );
 };
 
 export const useThemeContext = () => useContext(ThemeContext);
