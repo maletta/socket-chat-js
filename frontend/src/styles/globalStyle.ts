@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components/macro';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     font-size: 16px; 
+    background-color: #1e1e1e ; // black dark
   }
 
   :root{

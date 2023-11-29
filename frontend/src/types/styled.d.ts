@@ -1,7 +1,10 @@
-import 'styled-components';
+import 'styled-components/macro';
 import { ITheme } from 'types/theme-types';
 
 declare module 'styled-components' {
-  export type DefaultTheme = ITheme
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefaultTheme extends ITheme {
+
+  }
 }
 
