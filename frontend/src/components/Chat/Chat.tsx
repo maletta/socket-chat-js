@@ -1,16 +1,13 @@
 import React from 'react';
 
 import CHS from './styles';
-import { messagesMocks } from 'mocks/chatMessagesMock';
-import { IMessageAuthor } from 'types/messages-types';
 import clsx from 'clsx';
 import { formatDate } from 'utils/date';
+import { useChat } from './useChat';
 
 const Chat: React.FC = () => {
-  const user: IMessageAuthor = {
-    id: 1,
-    name: 'Agente 1',
-  };
+  const { messagesWS, refMessageList, currentUser, onChangeInputChat, onKeyDownEnterChat, sendMessage, inputValue } = useChat();
+
   return (
     <CHS.ChatContainer>
       <CHS.ChatHeader>
@@ -23,9 +20,9 @@ const Chat: React.FC = () => {
         </CHS.WaveSVG>
       </CHS.ChatHeader>
       <CHS.ChatMessageContainer>
-        <CHS.ChatMessageList>
-          {messagesMocks.map(message => {
-            const messageAuthor = message.author.id === user.id ? 'sender' : 'receiver';
+        <CHS.ChatMessageList ref={refMessageList}>
+          {messagesWS.map(message => {
+            const messageAuthor = message.author.id === currentUser.id ? 'sender' : 'receiver';
             return (
               <CHS.ChatMessageItem key={message.id} className={clsx({ [messageAuthor]: true })}>
                 <p> {message.content}</p>
@@ -36,8 +33,15 @@ const Chat: React.FC = () => {
         </CHS.ChatMessageList>
       </CHS.ChatMessageContainer>
       <CHS.ChatInputContainer>
-        <CHS.ChatInput />
-        <CHS.ChatSendButton />
+        <CHS.ChatInput>
+          <input type="text" onChange={onChangeInputChat} onKeyDown={onKeyDownEnterChat} value={inputValue} />
+        </CHS.ChatInput>
+        <CHS.ChatSendButton>
+          <button className="button-50" onClick={sendMessage}>
+            {/* <img src={sendIcon} /> */}
+            Enviar
+          </button>
+        </CHS.ChatSendButton>
       </CHS.ChatInputContainer>
     </CHS.ChatContainer>
   );
