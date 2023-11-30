@@ -64,7 +64,6 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import { createServer, Server as HttpServer } from 'http';
 import { Server, WebSocket } from 'ws';
-import { isWhileStatement } from 'typescript';
 
 class WebSocketServer {
   private app: Express;
@@ -80,8 +79,9 @@ class WebSocketServer {
     this.wss = new Server({ server: this.httpServer });
     this.wss.on('connection', this.onConnection);
 
-    this.wss.on('message', (message) => {
-      console.log(`Mensagem recebida: ${message}`);
+    this.wss.on('message', (message: Buffer) => {
+      console.log(`Mensagem recebida v1: ${message}`);
+      console.log(message.toJSON())
     });
 
 
@@ -93,7 +93,8 @@ class WebSocketServer {
   private onConnection(socket: WebSocket) {
     // ... 
     socket.on("message", (data) => {
-      console.log("mensagem recebida ", data)
+      console.log("mensagem recebida v3 ", data.toString())
+      console.log("mensagem recebida v3 ", JSON.parse(data.toString()))
     })
     console.log("conectou ao cliente WS")
   }

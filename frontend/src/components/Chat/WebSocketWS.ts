@@ -20,7 +20,8 @@ const useWebSocket = (serverUrl: string) => {
   }, [serverUrl]);
 
   const sendMessageWS = (data: string) => {
-    socketRef.current?.send(data);
+    console.log("enviando mensagem socket ", JSON.stringify({ message: data }))
+    socketRef.current?.send(JSON.stringify({ message: data }));
   };
 
   return { sendMessageWS };
