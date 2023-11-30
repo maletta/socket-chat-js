@@ -22,9 +22,9 @@ const Chat: React.FC = () => {
       <CHS.ChatMessageContainer>
         <CHS.ChatMessageList ref={refMessageList}>
           {messagesWS.map(message => {
-            const messageAuthor = message.author.id === currentUser.id ? 'sender' : 'receiver';
+            const authorRole = message.author.id === currentUser.id ? 'sender' : 'receiver';
             return (
-              <CHS.ChatMessageItem key={message.id} className={clsx({ [messageAuthor]: true })}>
+              <CHS.ChatMessageItem key={message.id} className={clsx({ [authorRole]: true })}>
                 <p> {message.content}</p>
                 <span>{formatDate(message.timestamp)}</span>
               </CHS.ChatMessageItem>
