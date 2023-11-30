@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IMessageAuthor, IMessages } from 'types/messages-types';
 import { messagesMocks } from 'mocks/chatMessagesMock';
+import { WebSocketConnection } from './WebSocketConnection';
 
 const useChat = () => {
   const [messagesWS, setMessagesWS] = useState<IMessages[]>(messagesMocks);
@@ -47,6 +48,12 @@ const useChat = () => {
   useEffect(() => {
     eventScrollChatToEnd();
   }, [messagesWS]);
+
+  useEffect(() => {
+
+    // const ws = new WebSocketConnection();
+
+  }, [])
 
   return {
     messagesWS,

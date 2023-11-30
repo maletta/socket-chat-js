@@ -1,4 +1,5 @@
-import { createGlobalStyle } from 'styled-components/macro';
+// eslint-disable-next-line no-restricted-imports
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -23,3 +24,4 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default GlobalStyle;
+

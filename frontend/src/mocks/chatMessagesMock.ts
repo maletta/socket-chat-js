@@ -24,13 +24,13 @@ const messagesMocks: IMessages[] = [
     timestamp: new Date().toUTCString(),
   },
   {
-    id: 2,
+    id: 3,
     author: author2,
     content: 'Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem',
     timestamp: new Date().toUTCString(),
   },
   {
-    id: 3,
+    id: 4,
     author: author1,
     content: 'Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem',
     timestamp: new Date().toUTCString(),
