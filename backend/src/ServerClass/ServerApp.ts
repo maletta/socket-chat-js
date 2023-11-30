@@ -1,6 +1,7 @@
 import { ChatServer } from './ChatServer';
 import express, { Express } from 'express';
 import { Server as HttpServer } from 'http';
+import cors from "cors";
 
 class ServerApp {
 
@@ -12,6 +13,8 @@ class ServerApp {
 
   constructor() {
     this.app = express();
+
+    this.app.use(cors({ origin: "*" }))
     this.httpServer = new HttpServer(this.app);
     this.chatServer = new ChatServer(this.httpServer);
   }

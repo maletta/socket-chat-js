@@ -1,17 +1,91 @@
-import { ServerApp } from "ServerApp";
+// import express, { Express } from 'express';
+// import { Server as HttpServer } from 'http';
+// import { Server as IOServer, Socket } from 'socket.io';
 
-;
-const server = new ServerApp();
+// class Server {
+//   private app: Express;
+//   private server: HttpServer;
+//   private io: IOServer;
+
+//   constructor() {
+//     this.app = express();
+//     this.server = new HttpServer(this.app);
+//     this.io = new IOServer(this.server);
+//     this.io.on('connection', this.onConnection);
+//   }
+
+//   private onConnection(socket: Socket): void {
+//     console.log("se conectou ao socket")
+//   }
+
+//   public listen(port: number = 3333): void {
+//     console.log("listen on port ", port)
+//     this.server.listen(port);
+//   }
+// }
+
+// const server = new Server();
+// server.listen();
 
 
-server.chatServer.appendListener('chat message', (msg: string) => {
-  console.log('Nova mensagem de chat:', msg);
-});
+/** USANDO SOCKET IO */
 
-server.app.get("/", (req, res) => {
-  console.log("alo http ")
-  res.status(200).send("alo htto")
-})
+// import { createServer, Server as HttpServer } from "http"
+// import { Server, Socket } from "socket.io"
 
 
-server.listen(3333)
+// const httpServer = createServer()
+
+// function socketServer(httpServer: HttpServer) {
+//   const io = new Server(httpServer, {
+//     cors: {
+//       origin: "*",
+//       methods: ["GET", 'POST']
+//     }
+//   })
+
+//   io.on("connection", (socket: Socket) => {
+//     console.log("conectado ao cliente")
+//     socket.on("hello", (msg: any) => {
+//       io.emit("hello", msg)
+//     })
+//   })
+
+// }
+
+// socketServer(httpServer)
+
+// httpServer.listen(3333)
+
+
+/** USANDO WS */
+
+import express, { Express } from 'express';
+import cors from 'cors';
+import { createServer, Server as HttpServer } from 'http';
+import { Server, Socket } from 'ws';
+
+class WebSocketServer {
+  private app: Express;
+  private httpServer: HttpServer;
+  private wss: Server;
+
+  constructor(port: number) {
+    this.app = express();
+    this.app.use(cors());
+
+    this.httpServer = createServer(this.app);
+
+    this.wss = new Server({ server: this.httpServer });
+    this.wss.on('connection', this.onConnection);
+
+    this.httpServer.listen(port);
+  }
+
+  private onConnection(socket: Socket) {
+    // ... 
+    console.log("conectou ao cliente WS")
+  }
+}
+
+const server = new WebSocketServer(3333);
