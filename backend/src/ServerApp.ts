@@ -18,7 +18,7 @@ class ServerApp {
 
   public listen(port: number = 3000): void {
     this.httpServer.listen(port, () => {
-      console.log(`Servidor WS ouvindo na porta ${port}`);
+      console.log(`Servidor ouvindo na porta ${port}`);
     });
   }
 
