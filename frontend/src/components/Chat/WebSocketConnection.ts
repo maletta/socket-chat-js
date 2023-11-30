@@ -12,6 +12,10 @@ class WebSocketConnection {
     console.log('Conectado ao servidor WebSocket');
     // ...
   }
+
+  public disconnect() {
+    this.socket.disconnect()
+  }
 }
 
 

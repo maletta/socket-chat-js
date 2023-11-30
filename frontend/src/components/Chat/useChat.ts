@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IMessageAuthor, IMessages } from 'types/messages-types';
 import { messagesMocks } from 'mocks/chatMessagesMock';
 import { WebSocketConnection } from './WebSocketConnection';
+import { useWebSocket } from './WebSocketWS';
 
 const useChat = () => {
   const [messagesWS, setMessagesWS] = useState<IMessages[]>(messagesMocks);
+  const { sendMessageWS } = useWebSocket('ws://localhost:3333');
+
   const [inputValue, setInputValue] = useState<string>('');
   const refMessageList = useRef<HTMLDivElement | null>(null);
   const currentUser: IMessageAuthor = {
@@ -53,6 +56,9 @@ const useChat = () => {
 
     // const ws = new WebSocketConnection();
 
+    return () => {
+      // ws.disconnect();
+    }
   }, [])
 
   return {
