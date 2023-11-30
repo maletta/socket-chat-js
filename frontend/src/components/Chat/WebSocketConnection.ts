@@ -4,7 +4,7 @@ class WebSocketConnection {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3333');
+    this.socket = io('http://localhost:5000');
     this.socket.on('connect', this.onConnect);
   }
 
@@ -15,6 +15,10 @@ class WebSocketConnection {
 
   public disconnect() {
     this.socket.disconnect()
+  }
+
+  public sendMessage(message: object) {
+    this.socket.emit("message", message)
   }
 }
 

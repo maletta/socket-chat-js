@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IMessageAuthor, IMessages } from 'types/messages-types';
 import { messagesMocks } from 'mocks/chatMessagesMock';
-import { WebSocketConnection } from './WebSocketConnection';
-import { useWebSocket } from './WebSocketWS';
+import { useWebSocket } from './useSocketWS';
+import useSocketIO from './useSocketIO';
 
 const useChat = () => {
   const [messagesWS, setMessagesWS] = useState<IMessages[]>(messagesMocks);
-  const { sendMessageWS } = useWebSocket('ws://localhost:3333');
+  const { sendMessageWS } = useWebSocket('ws://localhost:4000');
+  const { sendMessageIO } = useSocketIO('ws://localhost:5000');
+
 
   const [inputValue, setInputValue] = useState<string>('');
   const refMessageList = useRef<HTMLDivElement | null>(null);
@@ -47,21 +49,17 @@ const useChat = () => {
       setInputValue('');
     }
 
-    sendMessageWS(inputValue)
+    sendMessageWS(inputValue);
+
+    sendMessageIO({ message: inputValue })
+
   }
 
   useEffect(() => {
     eventScrollChatToEnd();
   }, [messagesWS]);
 
-  useEffect(() => {
 
-    // const ws = new WebSocketConnection();
-
-    return () => {
-      // ws.disconnect();
-    }
-  }, [])
 
   return {
     messagesWS,
