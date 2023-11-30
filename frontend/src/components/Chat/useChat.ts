@@ -46,6 +46,8 @@ const useChat = () => {
       });
       setInputValue('');
     }
+
+    sendMessageWS(inputValue)
   }
 
   useEffect(() => {

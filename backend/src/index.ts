@@ -63,7 +63,8 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import { createServer, Server as HttpServer } from 'http';
-import { Server, Socket } from 'ws';
+import { Server, WebSocket } from 'ws';
+import { isWhileStatement } from 'typescript';
 
 class WebSocketServer {
   private app: Express;
@@ -79,13 +80,24 @@ class WebSocketServer {
     this.wss = new Server({ server: this.httpServer });
     this.wss.on('connection', this.onConnection);
 
+    this.wss.on('message', (message) => {
+      console.log(`Mensagem recebida: ${message}`);
+    });
+
+
+
+
     this.httpServer.listen(port);
   }
 
-  private onConnection(socket: Socket) {
+  private onConnection(socket: WebSocket) {
     // ... 
+    socket.on("message", (data) => {
+      console.log("mensagem recebida ", data)
+    })
     console.log("conectou ao cliente WS")
   }
+
 }
 
 const server = new WebSocketServer(3333);

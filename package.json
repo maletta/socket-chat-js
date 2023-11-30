@@ -1,10 +1,15 @@
 {
   "name": "socket-chat",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "monorepo with frontend and backend of a chat with websockets",
+  "main": "backend/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:all": "cd frontend && yarn dev && cd ../backend && yarn dev",
+    "dev:front": "cd frontend && yarn dev",
+    "dev:back": "cd backend && yarn dev",
+    "install:all": "cd frontend && yarn install && cd ../backend && yarn install",
+    "install:front": "cd frontend && yarn install",
+    "install:back": "cd backend && yarn install"
   },
   "keywords": [],
   "author": "",
