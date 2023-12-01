@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { IMessages } from '../../../../backend/src/types/message-types';
 
 const useSocketIO = (url: string, chatId: string | number) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [newMessageIO, setNewMessageIO] = useState<IMessages | null>(null);
 
   useEffect(() => {
     const socketIo = io(url);
@@ -10,11 +12,12 @@ const useSocketIO = (url: string, chatId: string | number) => {
 
     socketIo.on('connect', () => {
       console.log('conectou ao servidor io');
-      socketIo.emit('enter-room', { id: chatId });
+      socketIo.emit('enter-room', { author: { id: chatId } });
     });
 
-    socketIo.on('room-message', data => {
-      console.log('mensagem recebida ', data);
+    socketIo.on('new-message', message => {
+      console.log('nova mensagem recebida ', message);
+      setNewMessageIO(message);
     });
 
     return () => {
@@ -24,11 +27,15 @@ const useSocketIO = (url: string, chatId: string | number) => {
 
   const sendMessageIO = (message: object) => {
     if (socket) {
+      console.log('send message IO ', message);
       socket.emit('message', message);
     }
   };
 
-  return { sendMessageIO };
+  return {
+    sendMessageIO,
+    newMessageIO,
+  };
 };
 
 export default useSocketIO;

@@ -23,6 +23,7 @@ const Chat: React.FC = () => {
         <CHS.ChatMessageList ref={refMessageList}>
           {messagesWS.map(message => {
             const authorRole = message.author.id === currentUser.id ? 'sender' : 'receiver';
+
             return (
               <CHS.ChatMessageItem key={message.id} className={clsx({ [authorRole]: true })}>
                 <p> {message.content}</p>

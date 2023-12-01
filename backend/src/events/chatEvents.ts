@@ -9,12 +9,16 @@ type IMessageBasic = {
 const chatEvents = new EventsSocketIO<IMessages>();
 
 const getRoomId = (data: IMessages): string => {
-    return `proposal:${data.id}`;
+    return `proposal:chat`;
 };
 
 chatEvents.addEvent('message', (socket, data) => {
     console.log('mensagem rebida ', data);
-    socket.to(getRoomId(data)).emit('room-message', data);
+    console.log('chat id  ', getRoomId(data));
+    socket.to(getRoomId(data)).emit('new-message', data);
+    console.log('minha salas', socket.rooms);
+
+    // socket.to('proposta-1').emit('new-message', data);
 });
 
 chatEvents.addEvent('enter-room', (socket, data) => {

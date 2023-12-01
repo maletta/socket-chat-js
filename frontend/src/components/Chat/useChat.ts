@@ -5,16 +5,21 @@ import { useWebSocket } from './useSocketWS';
 import useSocketIO from './useSocketIO';
 
 const useChat = () => {
-  const [messagesWS, setMessagesWS] = useState<IMessages[]>(messagesMocks);
+  if (!sessionStorage.getItem('sessionID')) {
+    sessionStorage.setItem('sessionID', new Date().toUTCString());
+  }
+
+  const currentUser: IMessageAuthor = {
+    id: sessionStorage.getItem('sessionID') as string,
+    name: 'Agente Teste',
+  };
+
+  const [messagesWS, setMessagesWS] = useState<IMessages[]>([]);
   const { sendMessageWS } = useWebSocket('ws://localhost:4000');
-  const { sendMessageIO } = useSocketIO('ws://localhost:5000', 1);
+  const { sendMessageIO, newMessageIO } = useSocketIO('ws://localhost:5000', 'chat');
 
   const [inputValue, setInputValue] = useState<string>('');
   const refMessageList = useRef<HTMLDivElement | null>(null);
-  const currentUser: IMessageAuthor = {
-    id: 1,
-    name: 'Agente 1',
-  };
 
   function onChangeInputChat(event: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(event.currentTarget.value);
@@ -32,26 +37,42 @@ const useChat = () => {
     }
   }
 
-  function sendMessage() {
-    if (inputValue.length > 0) {
-      const newMessage: IMessages = {
-        id: Number(messagesWS[messagesWS.length - 1].id) + 1,
-        author: currentUser,
-        content: inputValue,
-        timestamp: new Date().toISOString(),
-      };
-
-      setInputValue('');
-      sendMessageWS(inputValue);
-      sendMessageIO(newMessage);
-    }
-  }
-
   function onReceiveChatMessage(newMessage: IMessages) {
     setMessagesWS(prev => {
       return [...prev, newMessage];
     });
   }
+
+  function createMessageId() {
+    if (messagesWS.length === 0) {
+      return Math.random() * Math.random();
+    }
+
+    return Number(messagesWS[messagesWS.length - 1].id) * Math.random();
+  }
+
+  function sendMessage() {
+    if (inputValue.length > 0) {
+      const newMessage: IMessages = {
+        id: createMessageId(),
+        author: currentUser,
+        content: inputValue,
+        timestamp: new Date().toISOString(),
+      };
+      setInputValue('');
+
+      // sendMessageWS(inputValue);
+      sendMessageIO(newMessage);
+
+      onReceiveChatMessage(newMessage);
+    }
+  }
+
+  useEffect(() => {
+    if (newMessageIO) {
+      onReceiveChatMessage(newMessageIO);
+    }
+  }, [newMessageIO]);
 
   useEffect(() => {
     eventScrollChatToEnd();

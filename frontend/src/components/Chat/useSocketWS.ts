@@ -6,13 +6,13 @@ const useWebSocket = (serverUrl: string) => {
   useEffect(() => {
     socketRef.current = new WebSocket(serverUrl);
 
-    socketRef.current.onmessage = (event) => {
+    socketRef.current.onmessage = event => {
       console.log('Mensagem recebida:', event.data);
     };
 
-    socketRef.current.onopen = (event) => {
-      console.log("conectou no servidor ws")
-    }
+    socketRef.current.onopen = event => {
+      console.log('conectou no servidor ws');
+    };
 
     return () => {
       socketRef.current?.close();
@@ -20,12 +20,11 @@ const useWebSocket = (serverUrl: string) => {
   }, [serverUrl]);
 
   const sendMessageWS = (data: string) => {
-    console.log("enviando mensagem socket ", JSON.stringify({ message: data }))
+    // console.log('enviando mensagem socket WS', JSON.stringify({ message: data }));
     socketRef.current?.send(JSON.stringify({ message: data }));
   };
 
   return { sendMessageWS };
 };
 
-
-export { useWebSocket }
+export { useWebSocket };
