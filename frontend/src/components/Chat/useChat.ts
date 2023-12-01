@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IMessageAuthor, IMessages } from 'types/messages-types';
+import { IMessageAuthor, IMessages } from '../../../../backend/src/types/message-types';
 import { messagesMocks } from 'mocks/chatMessagesMock';
 import { useWebSocket } from './useSocketWS';
 import useSocketIO from './useSocketIO';
@@ -7,8 +7,7 @@ import useSocketIO from './useSocketIO';
 const useChat = () => {
   const [messagesWS, setMessagesWS] = useState<IMessages[]>(messagesMocks);
   const { sendMessageWS } = useWebSocket('ws://localhost:4000');
-  const { sendMessageIO } = useSocketIO('ws://localhost:5000');
-
+  const { sendMessageIO } = useSocketIO('ws://localhost:5000', 1);
 
   const [inputValue, setInputValue] = useState<string>('');
   const refMessageList = useRef<HTMLDivElement | null>(null);
@@ -35,31 +34,28 @@ const useChat = () => {
 
   function sendMessage() {
     if (inputValue.length > 0) {
-      setMessagesWS(prev => {
-        return [
-          ...prev,
-          {
-            id: Number(prev[prev.length - 1].id) + 1,
-            author: currentUser,
-            content: inputValue,
-            timestamp: new Date().toISOString(),
-          },
-        ];
-      });
+      const newMessage: IMessages = {
+        id: Number(messagesWS[messagesWS.length - 1].id) + 1,
+        author: currentUser,
+        content: inputValue,
+        timestamp: new Date().toISOString(),
+      };
+
       setInputValue('');
+      sendMessageWS(inputValue);
+      sendMessageIO(newMessage);
     }
+  }
 
-    sendMessageWS(inputValue);
-
-    sendMessageIO({ message: inputValue })
-
+  function onReceiveChatMessage(newMessage: IMessages) {
+    setMessagesWS(prev => {
+      return [...prev, newMessage];
+    });
   }
 
   useEffect(() => {
     eventScrollChatToEnd();
   }, [messagesWS]);
-
-
 
   return {
     messagesWS,

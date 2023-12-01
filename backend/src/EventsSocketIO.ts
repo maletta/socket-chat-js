@@ -9,10 +9,10 @@ interface IEventItem<T> {
 
 class EventsSocketIO<T> {
     private _events: IEventItem<T>[];
-    private io: Server;
+    // private io: Server;
 
-    constructor(ioServer: Server) {
-        this.io = ioServer;
+    constructor() {
+        // this.io = ioServer;
         this._events = [];
     }
 

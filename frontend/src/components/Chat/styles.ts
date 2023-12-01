@@ -98,6 +98,8 @@ const ChatMessageItem = styled.div`
     font-size: 1.4rem;
     border-radius: 1rem;
     color: ${({ theme }) => theme.palette.black.dark};
+    /* color: ${({ theme }) => theme.palette.commom.white}; */
+    word-wrap: break-word;
   }
 
   span {
@@ -106,7 +108,7 @@ const ChatMessageItem = styled.div`
 
   &.sender {
     p {
-      background-image: linear-gradient(to right, #8e2de2, #4a00e0);
+      background-image: linear-gradient(to right, #8b95f6, #9b8bf4);
     }
 
     span {
@@ -116,7 +118,7 @@ const ChatMessageItem = styled.div`
 
   &.receiver {
     p {
-      background-image: linear-gradient(25deg, #d64c7f, #ee4758 50%);
+      background-image: linear-gradient(25deg, #f8b8d0, #f194b8 50%);
     }
   }
 `;

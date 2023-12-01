@@ -1,4 +1,5 @@
-import { IMessages } from 'types/messages-types';
+// import { IMessages } from 'custom-types';
+import { IMessageAuthor, IMessages } from '../../../backend/src/types/message-types';
 
 const author1 = {
   id: 1,

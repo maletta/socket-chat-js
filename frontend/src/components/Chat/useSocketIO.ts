@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const useSocketIO = (url: string) => {
+const useSocketIO = (url: string, chatId: string | number) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
@@ -10,12 +10,17 @@ const useSocketIO = (url: string) => {
 
     socketIo.on('connect', () => {
       console.log('conectou ao servidor io');
+      socketIo.emit('enter-room', { id: chatId });
+    });
+
+    socketIo.on('room-message', data => {
+      console.log('mensagem recebida ', data);
     });
 
     return () => {
       socketIo.disconnect();
     };
-  }, [url]);
+  }, [url, chatId]);
 
   const sendMessageIO = (message: object) => {
     if (socket) {

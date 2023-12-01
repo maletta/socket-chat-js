@@ -13,7 +13,7 @@ class SocketIO {
     private httpServer: HttpServer;
     public io: IOServer;
 
-    private clientEvents: IClientEvents[];
+    private clientEvents: IClientEvents[] = [];
 
     constructor() {
         this.app = express();
@@ -24,13 +24,11 @@ class SocketIO {
                 methods: ['GET', 'POST'],
             },
         });
-        this.clientEvents = [];
 
         this.io.on('connection', this.onConnection);
     }
 
-    private registerEventsOnSocket(socket: Socket): void {
-        console.log('----------------------- register event ------------------');
+    private registerEventsOnSocket = (socket: Socket): void => {
         this.clientEvents.forEach(item => {
             socket.on(item.eventName, data => {
                 console.log('evento ', item.eventName);
@@ -38,15 +36,15 @@ class SocketIO {
                 item.handleEvent(socket, data);
             });
         });
-    }
+    };
 
-    private onConnection(socket: Socket): void {
+    private onConnection = (socket: Socket): void => {
         console.log('se conectou ao socket IO');
         this.registerEventsOnSocket(socket);
-    }
+    };
 
     public AddEvent(events: IClientEvents[]) {
-        this.clientEvents.concat(events);
+        this.clientEvents = this.clientEvents.concat(events);
     }
 
     public listen(port: number = 3333): void {

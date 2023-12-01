@@ -25,9 +25,10 @@
     "pages/*": ["pages/*"],
     "components/*": ["components/*"],
     "utils/*": ["utils/*"],
-    "assets/*": ["assets/*"]
+    "assets/*": ["assets/*"],
+    "@custom-types/*": ["../backend/src/types/*"]
   },
   "include": [
-    "src", "src/types"
+    "src", "src/types", "../backend/src/types"
   ]
 }
