@@ -6,12 +6,11 @@ const useSocketIO = (url: string) => {
 
   useEffect(() => {
     const socketIo = io(url);
+    setSocket(socketIo);
 
     socketIo.on('connect', () => {
       console.log('conectou ao servidor io');
     });
-
-    setSocket(socketIo);
 
     return () => {
       socketIo.disconnect();
