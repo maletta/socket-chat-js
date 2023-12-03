@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { IMessages } from '../../../../backend/src/types/message-types';
+import { IMessages } from '../../../../../backend/src/types/message-types';
 
 const useSocketIO = (url: string, chatId: string | number) => {
   const [socket, setSocket] = useState<Socket | null>(null);

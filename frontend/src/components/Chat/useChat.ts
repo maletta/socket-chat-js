@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IMessageAuthor, IMessages } from '../../../../backend/src/types/message-types';
 import { messagesMocks } from 'mocks/chatMessagesMock';
-import { useWebSocket } from './useSocketWS';
-import useSocketIO from './useSocketIO';
+import { useWebSocket } from './WebSocketWS/useSocketWS';
+import useSocketIO from './WebSocketIO/useSocketIO';
 
 const useChat = () => {
   if (!sessionStorage.getItem('sessionID')) {
@@ -15,7 +15,7 @@ const useChat = () => {
   };
 
   const [messagesWS, setMessagesWS] = useState<IMessages[]>([]);
-  const { sendMessageWS } = useWebSocket('ws://localhost:4000');
+  // const { sendMessageWS } = useWebSocket('ws://localhost:4000');
   const { sendMessageIO, newMessageIO } = useSocketIO('ws://localhost:5000', 'chat');
 
   const [inputValue, setInputValue] = useState<string>('');
