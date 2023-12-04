@@ -38,7 +38,7 @@ const useChat = () => {
     }
   }
 
-  function onReceiveChatMessage(newMessage: IMessages) {
+  function handleReceiveMessage(newMessage: IMessages) {
     setMessagesWS(prev => {
       return [...prev, newMessage];
     });
@@ -66,16 +66,19 @@ const useChat = () => {
       // sendMessageWS(inputValue);
       sendMessageIO(newMessage);
 
-      onReceiveChatMessage(newMessage);
+      handleReceiveMessage(newMessage);
     }
   }
 
   useEffect(() => {
     if (isSocketConnected) {
       console.log('isSocketConnected onReceiveMessageIO');
-      onReceiveMessageIO(onReceiveChatMessage);
+      onReceiveMessageIO(handleReceiveMessage);
+      onEnterRoomIO(() => {
+        //
+      });
     }
-  }, []);
+  }, [isSocketConnected]);
 
   useEffect(() => {
     eventScrollChatToEnd();

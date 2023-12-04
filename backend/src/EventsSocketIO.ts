@@ -18,12 +18,13 @@ class EventsSocketIO<T> {
 
     public addEvent(eventName: string, handleEvent: IHandleEvent<T>) {
         console.log('eventName ', eventName);
-        console.log('data ');
         this._events.push({
             eventName,
             handleEvent,
         });
     }
+
+    public joinRoom(eventName: string, callback: (socket: Socket, data: any) => void) {}
 
     get events() {
         return this._events;

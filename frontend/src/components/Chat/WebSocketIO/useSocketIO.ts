@@ -6,6 +6,7 @@ enum EventsTypes {
   NEW_MESSAGE = 'NEW_MESSAGE',
   MESSAGE_TO_CLIENT = 'MESSAGE_TO_CLIENT',
   ENTER_ROOM = 'ENTER_ROOM',
+  ROOM_USERS_UPDATE = 'ROOM_USERS_UPDATE',
 }
 
 const useSocketIO = (url: string, roomId: string | number) => {
@@ -19,7 +20,7 @@ const useSocketIO = (url: string, roomId: string | number) => {
 
     socketIo.on('connect', () => {
       console.log('conectou ao servidor io');
-      socketIo.emit(EventsTypes.ENTER_ROOM, { roomId: roomId });
+      socketIo.emit(EventsTypes.ENTER_ROOM, { roomId: roomId, author: { name: 'maletta', id: 1 } });
       setIsSocketConnected(true);
     });
 
@@ -31,8 +32,8 @@ const useSocketIO = (url: string, roomId: string | number) => {
 
   const onEnterRoomIO = (callback: (data: []) => void) => {
     if (socket) {
-      socket.on(EventsTypes.MESSAGE_TO_CLIENT, message => {
-        console.log('onEnterRoomIO ', message);
+      socket.on(EventsTypes.ROOM_USERS_UPDATE, message => {
+        console.log('ROOM_USERS_UPDATE ', message);
         callback(message);
       });
     }
@@ -40,6 +41,7 @@ const useSocketIO = (url: string, roomId: string | number) => {
 
   const onReceiveMessageIO = (callback: (data: any) => void) => {
     if (socket && isSocketConnected) {
+      console.log('add evento ', EventsTypes.MESSAGE_TO_CLIENT);
       socket.on(EventsTypes.MESSAGE_TO_CLIENT, message => {
         console.log('onReceiveMessageIO ', message);
         callback(message);
