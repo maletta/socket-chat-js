@@ -1,5 +1,5 @@
 import { EventsSocketIO } from 'EventsSocketIO';
-import { IMessages } from 'types/message-types';
+import { IMessages, IMessageAuthor } from 'types/message-types';
 
 enum EventsTypes {
     NEW_MESSAGE = 'NEW_MESSAGE',
@@ -14,9 +14,17 @@ const getRoomId = (data: IMessages): string => {
     return `proposal:${data.roomId}`;
 };
 
-const chatEvents = new EventsSocketIO<IMessages>();
+const rooms = new Map<number | string, Set<IMessageAuthor>>();
 
-const rooms = new Map<number, Set<IMessages>>();
+const addUserToRoom = (roomId: number | string, author: IMessageAuthor): Set<IMessageAuthor> => {
+    const users: Set<IMessageAuthor> = rooms.get(roomId) || new Set();
+    users.add(author);
+    rooms.set(roomId, users);
+
+    return users;
+};
+
+const chatEvents = new EventsSocketIO<IMessages>();
 
 chatEvents.addEvent(EventsTypes.NEW_MESSAGE, (socket, data) => {
     console.log('EventsTypes.NEW_MESSAGE ', data);
@@ -28,12 +36,12 @@ chatEvents.addEvent(EventsTypes.ENTER_ROOM, (socket, data) => {
 
     // adicionar a sala
     socket.join(getRoomId(data));
-
+    const usersOnRoomId = addUserToRoom(getRoomId(data), data.author);
     // enviar mensagens anteriores
     socket.emit(EventsTypes.ON_ENTER_ROOM, []);
 
     // enviar contador de usuário na sala
-    socket.to(getRoomId(data)).emit(EventsTypes.ROOM_USERS_UPDATE, []);
+    socket.to(getRoomId(data)).emit(EventsTypes.ROOM_USERS_UPDATE, Array.from(usersOnRoomId));
 });
 
 export { chatEvents, EventsTypes };
