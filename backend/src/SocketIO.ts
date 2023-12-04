@@ -43,8 +43,8 @@ class SocketIO {
         this.registerEventsOnSocket(socket);
     };
 
-    public AddEvent(events: IClientEvents[]) {
-        this.clientEvents = this.clientEvents.concat(events);
+    public addEvent(events: IClientEvents[]) {
+        this.clientEvents = [...this.clientEvents, ...events];
     }
 
     public listen(port: number = 3333): void {

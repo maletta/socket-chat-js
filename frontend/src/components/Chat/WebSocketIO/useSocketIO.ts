@@ -11,6 +11,7 @@ enum EventsTypes {
 const useSocketIO = (url: string, roomId: string | number) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [newMessageIO, setNewMessageIO] = useState<IMessages | null>(null);
+  const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
 
   useEffect(() => {
     const socketIo = io(url);
@@ -19,20 +20,35 @@ const useSocketIO = (url: string, roomId: string | number) => {
     socketIo.on('connect', () => {
       console.log('conectou ao servidor io');
       socketIo.emit(EventsTypes.ENTER_ROOM, { roomId: roomId });
-    });
-
-    socketIo.on(EventsTypes.MESSAGE_TO_CLIENT, message => {
-      console.log('nova mensagem recebida ', message);
-      setNewMessageIO(message);
+      setIsSocketConnected(true);
     });
 
     return () => {
       socketIo.disconnect();
+      setIsSocketConnected(false);
     };
   }, [url, roomId]);
 
-  const sendMessageIO = (message: object) => {
+  const onEnterRoomIO = (callback: (data: []) => void) => {
     if (socket) {
+      socket.on(EventsTypes.MESSAGE_TO_CLIENT, message => {
+        console.log('onEnterRoomIO ', message);
+        callback(message);
+      });
+    }
+  };
+
+  const onReceiveMessageIO = (callback: (data: any) => void) => {
+    if (socket && isSocketConnected) {
+      socket.on(EventsTypes.MESSAGE_TO_CLIENT, message => {
+        console.log('onReceiveMessageIO ', message);
+        callback(message);
+      });
+    }
+  };
+
+  const sendMessageIO = (message: object) => {
+    if (socket && isSocketConnected) {
       console.log('send message IO ', message);
       socket.emit(EventsTypes.NEW_MESSAGE, message);
     }
@@ -41,6 +57,9 @@ const useSocketIO = (url: string, roomId: string | number) => {
   return {
     sendMessageIO,
     newMessageIO,
+    isSocketConnected,
+    onEnterRoomIO,
+    onReceiveMessageIO,
   };
 };
 

@@ -17,7 +17,7 @@ const useChat = () => {
   const roomId = 1;
   const [messagesWS, setMessagesWS] = useState<IMessages[]>([]);
   // const { sendMessageWS } = useWebSocket('ws://localhost:4000');
-  const { sendMessageIO, newMessageIO } = useSocketIO('ws://localhost:5000', roomId);
+  const { sendMessageIO, onEnterRoomIO, onReceiveMessageIO, newMessageIO, isSocketConnected } = useSocketIO('ws://localhost:5000', roomId);
 
   const [inputValue, setInputValue] = useState<string>('');
   const refMessageList = useRef<HTMLDivElement | null>(null);
@@ -71,10 +71,11 @@ const useChat = () => {
   }
 
   useEffect(() => {
-    if (newMessageIO) {
-      onReceiveChatMessage(newMessageIO);
+    if (isSocketConnected) {
+      console.log('isSocketConnected onReceiveMessageIO');
+      onReceiveMessageIO(onReceiveChatMessage);
     }
-  }, [newMessageIO]);
+  }, []);
 
   useEffect(() => {
     eventScrollChatToEnd();

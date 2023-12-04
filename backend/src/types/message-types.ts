@@ -2,10 +2,7 @@ interface IMessages {
     id: string | number;
     content: string;
     timestamp: string;
-    author: {
-        id: string | number;
-        name: string;
-    };
+    author: IMessageAuthor;
     roomId: string | number;
 }
 

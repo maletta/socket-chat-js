@@ -8,6 +8,6 @@ wsServer.listen(4000);
 
 const ioServer = new SocketIO();
 
-ioServer.AddEvent(chatEvents.events);
+ioServer.addEvent(chatEvents.events);
 
 ioServer.listen(5000);

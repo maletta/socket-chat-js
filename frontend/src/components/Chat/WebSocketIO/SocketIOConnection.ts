@@ -6,23 +6,51 @@ enum EventsTypes {
   ENTER_ROOM = 'ENTER_ROOM',
 }
 
-class SocketIOConnection {
-  private connection: Socket;
+interface IClientEvents {
+  eventName: string;
+  handleEvent: (socket: Socket, data: any) => void;
+}
+
+class SocketIOConnection<T> {
+  private connection: Socket | null;
+  private connectionUrl: string;
+
+  private clientEvents: IClientEvents[] = [];
 
   constructor(url: string) {
-    this.connection = io(url);
+    this.connectionUrl = url;
+    this.connection = null;
+
+    this.registerEventsOnSocket();
+  }
+
+  public connect(callback: (data: any) => void) {
+    this.connection = io(this.connectionUrl);
+    this.connection.on('connection', callback);
+  }
+
+  public disconnect() {
+    if (this.connection) {
+      this.connection.disconnect();
+    }
   }
 
   public joinRoom(roomId: string | number) {
-    this.connection.emit(EventsTypes.ENTER_ROOM, roomId);
+    if (this.connection) {
+      this.connection.emit(EventsTypes.ENTER_ROOM, roomId);
+    }
   }
 
-  public addEvent(eventName: string, callback: (...args: any) => void) {
-    this.connection.on(eventName, callback);
+  private registerEventsOnSocket() {
+    if (this.connection) {
+      this.clientEvents.forEach(clientEvent => {
+        this.connection?.on(clientEvent.eventName, clientEvent.handleEvent);
+      });
+    }
   }
 
-  public disconect() {
-    this.connection.disconnect();
+  public addEvent(events: IClientEvents[]) {
+    this.clientEvents = [...this.clientEvents, ...events];
   }
 }
 
