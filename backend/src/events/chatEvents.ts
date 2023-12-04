@@ -1,29 +1,26 @@
 import { EventsSocketIO } from 'EventsSocketIO';
-import { IMessageAuthor, IMessages } from 'types/message-types';
+import { IMessages } from 'types/message-types';
 
-type IMessageBasic = {
-    content: string;
-    id: string | number;
+enum EventsTypes {
+    NEW_MESSAGE = 'NEW_MESSAGE',
+    MESSAGE_TO_CLIENT = 'MESSAGE_TO_CLIENT',
+    ENTER_ROOM = 'ENTER_ROOM',
+}
+
+const getRoomId = (data: IMessages): string => {
+    return `proposal:${data.roomId}`;
 };
 
 const chatEvents = new EventsSocketIO<IMessages>();
 
-const getRoomId = (data: IMessages): string => {
-    return `proposal:chat`;
-};
-
-chatEvents.addEvent('message', (socket, data) => {
-    console.log('mensagem rebida ', data);
-    console.log('chat id  ', getRoomId(data));
-    socket.to(getRoomId(data)).emit('new-message', data);
-    console.log('minha salas', socket.rooms);
-
-    // socket.to('proposta-1').emit('new-message', data);
+chatEvents.addEvent(EventsTypes.NEW_MESSAGE, (socket, data) => {
+    console.log('EventsTypes.NEW_MESSAGE ', data);
+    socket.to(getRoomId(data)).emit(EventsTypes.MESSAGE_TO_CLIENT, data);
 });
 
-chatEvents.addEvent('enter-room', (socket, data) => {
-    console.log('entrando na sala ', data);
+chatEvents.addEvent(EventsTypes.ENTER_ROOM, (socket, data) => {
+    console.log('EventsTypes.ENTER_ROOM ', data);
     socket.join(getRoomId(data));
 });
 
-export { chatEvents };
+export { chatEvents, EventsTypes };

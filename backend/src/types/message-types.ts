@@ -6,6 +6,7 @@ interface IMessages {
         id: string | number;
         name: string;
     };
+    roomId: string | number;
 }
 
 interface IMessageAuthor {

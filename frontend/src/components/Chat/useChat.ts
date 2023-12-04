@@ -14,9 +14,10 @@ const useChat = () => {
     name: 'Agente Teste',
   };
 
+  const roomId = 1;
   const [messagesWS, setMessagesWS] = useState<IMessages[]>([]);
   // const { sendMessageWS } = useWebSocket('ws://localhost:4000');
-  const { sendMessageIO, newMessageIO } = useSocketIO('ws://localhost:5000', 'chat');
+  const { sendMessageIO, newMessageIO } = useSocketIO('ws://localhost:5000', roomId);
 
   const [inputValue, setInputValue] = useState<string>('');
   const refMessageList = useRef<HTMLDivElement | null>(null);
@@ -58,6 +59,7 @@ const useChat = () => {
         author: currentUser,
         content: inputValue,
         timestamp: new Date().toISOString(),
+        roomId: 1,
       };
       setInputValue('');
 

@@ -17,24 +17,28 @@ const messagesMocks: IMessages[] = [
     author: author1,
     content: 'Mensagem',
     timestamp: new Date().toUTCString(),
+    roomId: 1,
   },
   {
     id: 2,
     author: author2,
     content: 'Mensagem',
     timestamp: new Date().toUTCString(),
+    roomId: 1,
   },
   {
     id: 3,
     author: author2,
     content: 'Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem',
     timestamp: new Date().toUTCString(),
+    roomId: 1,
   },
   {
     id: 4,
     author: author1,
     content: 'Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem Mensagem',
     timestamp: new Date().toUTCString(),
+    roomId: 1,
   },
 ];
 
