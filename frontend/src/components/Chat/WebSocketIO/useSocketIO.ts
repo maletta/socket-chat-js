@@ -4,7 +4,7 @@ import { IMessages } from '../../../../../backend/src/types/message-types';
 
 enum EventsTypes {
   NEW_MESSAGE = 'NEW_MESSAGE',
-  MESSAGE_TO_CLIENT = 'MESSAGE_TO_CLIENT',
+  REPLY_NEW_MESSAGE = 'REPLY_NEW_MESSAGE',
   ENTER_ROOM = 'ENTER_ROOM',
   ROOM_USERS_UPDATE = 'ROOM_USERS_UPDATE',
 }
@@ -41,8 +41,8 @@ const useSocketIO = (url: string, roomId: string | number) => {
 
   const onReceiveMessageIO = (callback: (data: any) => void) => {
     if (socket && isSocketConnected) {
-      console.log('add evento ', EventsTypes.MESSAGE_TO_CLIENT);
-      socket.on(EventsTypes.MESSAGE_TO_CLIENT, message => {
+      console.log('add evento ', EventsTypes.REPLY_NEW_MESSAGE);
+      socket.on(EventsTypes.REPLY_NEW_MESSAGE, message => {
         console.log('onReceiveMessageIO ', message);
         callback(message);
       });

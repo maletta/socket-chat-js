@@ -2,7 +2,7 @@ import { io, Socket } from 'socket.io-client';
 
 enum EventsTypes {
   NEW_MESSAGE = 'NEW_MESSAGE',
-  MESSAGE_TO_CLIENT = 'MESSAGE_TO_CLIENT',
+  REPLY_NEW_MESSAGE = 'REPLY_NEW_MESSAGE',
   ENTER_ROOM = 'ENTER_ROOM',
 }
 
