@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IMessageAuthor, IMessages } from '../../../../backend/src/types/message-types';
+import { IMessageAuthor, IMessages } from '../../../../backend/src/Sockets/types/message-types';
 import { messagesMocks } from 'mocks/chatMessagesMock';
 import { useWebSocket } from './WebSocketWS/useSocketWS';
 import useSocketIO from './WebSocketIO/useSocketIO';

@@ -1,4 +1,3 @@
-import { EventsSocketIO } from 'EventsSocketIO';
 import express, { Express } from 'express';
 import { Server as HttpServer } from 'http';
 import { Server as IOServer, Socket } from 'socket.io';
@@ -54,31 +53,3 @@ class SocketIO {
 }
 
 export { SocketIO };
-
-/** USANDO SOCKET IO */
-
-// import { createServer, Server as HttpServer } from "http"
-// import { Server, Socket } from "socket.io"
-
-// const httpServer = createServer()
-
-// function socketServer(httpServer: HttpServer) {
-//   const io = new Server(httpServer, {
-//     cors: {
-//       origin: "*",
-//       methods: ["GET", 'POST']
-//     }
-//   })
-
-//   io.on("connection", (socket: Socket) => {
-//     console.log("conectado ao cliente")
-//     socket.on("hello", (msg: any) => {
-//       io.emit("hello", msg)
-//     })
-//   })
-
-// }
-
-// socketServer(httpServer)
-
-// httpServer.listen(3333)

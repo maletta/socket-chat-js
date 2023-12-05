@@ -2,6 +2,7 @@ import { RoomManager } from 'Sockets/RoomManager';
 import { Socket } from 'socket.io';
 import { ISocketEvent } from './ISocketEvent';
 import { EnumChatEventToClient } from 'Sockets/types/chat-events-types';
+import { IMessages } from 'Sockets/types/message-types';
 
 class EnterRoomEvent implements ISocketEvent {
     private roomManager: RoomManager;

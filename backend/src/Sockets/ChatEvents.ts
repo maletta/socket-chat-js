@@ -4,6 +4,7 @@ import { DisconnectEvent } from './events/DisconnectEvent';
 import { EnterRoomEvent } from './events/EnterRoomEvent';
 import { NewMessageEvent } from './events/NewMessageEvent';
 import { EnumChatEventFromClient } from './types/chat-events-types';
+import { IMessages } from './types/message-types';
 
 class ChatEvents {
     private chatEvents: EventsSocketIO<IMessages>;

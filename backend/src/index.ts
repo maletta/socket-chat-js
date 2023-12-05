@@ -1,4 +1,3 @@
-import { EventsSocketIO } from 'EventsSocketIO';
 import { SocketIO } from 'SocketIO';
 import { SocketWS } from 'SocketWS';
 import { ChatEvents } from 'Sockets/ChatEvents';

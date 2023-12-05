@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { IMessages } from '../../../../../backend/src/types/message-types';
+import { IMessages } from '../../../../../backend/src/Sockets/types/message-types';
 
 enum EventsTypes {
   NEW_MESSAGE = 'NEW_MESSAGE',

@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io';
 import { ISocketEvent } from './ISocketEvent';
 import { EnumChatEventToClient } from 'Sockets/types/chat-events-types';
+import { IMessages } from 'Sockets/types/message-types';
 
 class NewMessageEvent implements ISocketEvent {
     handleEvent(socket: Socket, data: IMessages): void {
