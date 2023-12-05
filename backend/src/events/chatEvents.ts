@@ -18,6 +18,18 @@ const getRoomId = (data: IMessages): string => {
 type ISocketUser = IMessageAuthor & { socketId: string };
 const rooms = new Map<number | string, Set<ISocketUser>>();
 
+function findRoomsBySocketId(socketId: string): string[] {
+    let roomIdArray: string[] = [];
+    for (const [roomId, users] of rooms) {
+        for (const user of users) {
+            if (user.socketId === socketId) {
+                roomIdArray.push(String(roomId));
+            }
+        }
+    }
+    return roomIdArray;
+}
+
 const addUserToRoom = (data: IMessages, user: ISocketUser): Set<ISocketUser> => {
     const roomId = getRoomId(data);
     const users: Set<ISocketUser> = rooms.get(roomId) || new Set();
@@ -28,15 +40,23 @@ const addUserToRoom = (data: IMessages, user: ISocketUser): Set<ISocketUser> => 
     return users;
 };
 
-const removeUserFromRoom = (socket: Socket): any => {
-    const roomId = getRoomId(data);
-    const foundUser: Set<ISocketUser> = rooms.get(roomId);
-    if (foundUser) {
-        foundUser.delete(user);
-        rooms.set(roomId, foundUser);
-    }
+const removeUserFromRoom = (socketId: string): string[] => {
+    const roomsId = findRoomsBySocketId(socketId);
 
-    return { user, foundUser };
+    console.log('old rooms ', rooms);
+
+    roomsId.forEach(roomId => {
+        const users: Set<ISocketUser> = rooms.get(roomId);
+        for (const user of users) {
+            if (user.socketId === socketId) {
+                users.delete(user);
+            }
+        }
+        rooms.set(roomId, users);
+    });
+    console.log('new rooms ', rooms);
+
+    return roomsId;
 };
 
 const chatEvents = new EventsSocketIO<IMessages>();
@@ -61,15 +81,16 @@ chatEvents.addEvent(EventsTypes.ENTER_ROOM, (socket, data) => {
     socket.to(getRoomId(data)).emit(EventsTypes.ROOM_USERS_UPDATE, Array.from(rooms.get(roomId)));
 });
 
-chatEvents.addEvent('disconnect', (socket, data) => {
-    console.log('EventsTypes.disconnect ', data);
+chatEvents.addEvent('disconnect', socket => {
+    console.log('EventsTypes.disconnect ');
 
-    const usersOnRoomId = removeUserFromRoom(data, { ...data.author, socketId: socket.id });
-    console.log('user to delete ', usersOnRoomId);
+    const roomsWithRemovedId = removeUserFromRoom(socket.id);
 
     // enviar contador de usuário na sala
-    console.log('disconnect ', rooms, Array.from(rooms));
-    socket.to(getRoomId(data)).emit(EventsTypes.ROOM_USERS_UPDATE, Array.from(rooms));
+    roomsWithRemovedId.forEach(roomId => {
+        const currentUsersOnline = rooms.get(roomId);
+        socket.to(roomId).emit(EventsTypes.ROOM_USERS_UPDATE, Array.from(currentUsersOnline));
+    });
 });
 
 export { chatEvents, EventsTypes };

@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn -r tsconfig-paths/register src/index.ts",
-    "lint:fix": "eslint --fix . --ext ts,tsx"
+    "lint:fix": "eslint --fix . --ext ts,tsx",
+    "test": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn -r tsconfig-paths/register src/test.ts"
   },
   "keywords": [],
   "author": "",
