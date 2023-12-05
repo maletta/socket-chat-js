@@ -71,16 +71,16 @@ const user3: ISocketUser = {
     socketId: '333',
 };
 
-function findRoomsBySocketId(socketId: string): string[] {
-    let roomIdArray: string[] = [];
+function findRoomsIdBySocketId(socketId: string): string[] {
+    let roomsIdArray: string[] = [];
     for (const [roomId, users] of rooms) {
         for (const user of users) {
             if (user.socketId === socketId) {
-                roomIdArray.push(String(roomId));
+                roomsIdArray.push(String(roomId));
             }
         }
     }
-    return roomIdArray;
+    return roomsIdArray;
 }
 
 const addUserToRoom = (data: IMessages, user: ISocketUser): Set<ISocketUser> => {
@@ -94,7 +94,7 @@ const addUserToRoom = (data: IMessages, user: ISocketUser): Set<ISocketUser> => 
 };
 
 const removeUserFromRoom = (socketId: string): any => {
-    const roomsId = findRoomsBySocketId(socketId);
+    const roomsId = findRoomsIdBySocketId(socketId);
 
     console.log('old rooms ', rooms);
 
